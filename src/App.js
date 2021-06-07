@@ -1,9 +1,10 @@
 import React from "react";
 import './style.css';
-import Login from './login';
-import Signup from './signup';
-import Forgot from './forgot';
-import resetPassword from './resetpassword';
+import Login from './components/login';
+import Signup from './components/signup';
+import Forgot from './components/forgot';
+import resetPassword from './components/resetpassword';
+import activateAccount from './components/activate_email'
 
 import {
   BrowserRouter as Router,
@@ -23,7 +24,7 @@ function App() {
       <Route path="/forgot-password" component={Forgot} exact={true}/>
       <Route path="/reset-password" component={resetPassword} exact={true}/>
       <Route path="/signup-page" component={Signup} exact={true}/>
-      {/* <Route path="/authentication/activate" component={Signup} exact={true}/> */}
+      <Route path="/authentication/activate" component={activateAccount} exact={true}/>
     </Switch>
   </Router>
   </>;

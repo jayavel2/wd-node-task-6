@@ -2,7 +2,7 @@
 import React from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
-// import { Link} from "react-router-dom";
+
 const resetPassword = () => (
   <div className="login_form">
       <h1 className="mt-5">Reset password</h1>

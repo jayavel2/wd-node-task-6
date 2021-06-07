@@ -1,5 +1,6 @@
 
 import React from "react";
+import axios from "axios";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { Link } from "react-router-dom";
@@ -11,10 +12,18 @@ const Signup = () => (
     initialValues={{ name: "",email: "", password: "" }}
     onSubmit={(values, { setSubmitting, resetForm  }) => {
       setTimeout(() => {
-        alert(JSON.stringify(values));
-        console.log("signup with", values);
+        let name = values.name
+        let email = values.email
+        let password = values.password
+        axios.post("https://myself-be-aware-b.herokuapp.com/api/signup",{name,email,password})
+        .then(function(response){
+          console.log(response)
+        })
+        .catch((error)=>console.log(error))
+        console.log("signup with", {name,email,password});
         setSubmitting(false);
         resetForm();
+        // window.location.replace('/');
       }, 500);
     }}
     
