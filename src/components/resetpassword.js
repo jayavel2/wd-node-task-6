@@ -2,19 +2,40 @@
 import React from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import {toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import {forgotPasswordReset} from '../helpers/controllers'
 
-const resetPassword = () => (
+function resetPassword(props){
+  toast.configure()
+  return<>
   <div className="login_form">
       <h1 className="mt-5">Reset password</h1>
       <Formik
     initialValues={{password: "" }}
     onSubmit={(values, { setSubmitting, resetForm  }) => {
       setTimeout(() => {
-        alert(JSON.stringify(values));
-        console.log("reset password is: ", values);
-        setSubmitting(false);
-        resetForm();
-        window.location.replace('/');
+        let newPass = values.password;
+        let resetLink = props.match.params.token;
+        const data = {newPass,resetLink}
+        forgotPasswordReset(data)
+        .then(res=>{           
+          if(res.data.type ==="success"){
+            toast.success("Request grant");
+            toast.success(res.data.message);
+          } else{
+            toast.error("Request Decline");
+            toast.error(res.data.message);
+          }      
+          resetForm();
+          setSubmitting(false); 
+          setTimeout(() => {
+            window.location.replace('/')
+          },6000);
+        })
+        .catch((error) => console.log(error))
+
+        // window.location.replace('/');
       }, 500);
     }}
     
@@ -63,7 +84,9 @@ const resetPassword = () => (
   </Formik>
 
   </div>
-);
+  </>
+}
+  
 
 export default resetPassword;
   

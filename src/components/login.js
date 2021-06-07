@@ -2,16 +2,38 @@ import React from "react";
 import { Formik } from "formik";
 // import * as EmailValidator from "email-validator";
 import * as Yup from "yup";
-import { Link } from "react-router-dom";
-const Login = () => (
-  <div className="login_form">
+import { Route,Link } from "react-router-dom";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import {emailValidation} from '../helpers/controllers';
+// import Home from './home'
+
+toast.configure()
+
+function Login(){
+
+  return<>
+    <div className="login_form">
       <h1 className="mt-5">Login form</h1>
       <Formik
     initialValues={{ email: "", password: "" }}
     onSubmit={(values, { setSubmitting, resetForm  }) => {
       setTimeout(() => {
-        alert(JSON.stringify(values));
-        console.log("Logging in", values);
+        let email = values.email;
+        let password = values.password;
+        const data = {email,password};
+        emailValidation(data)
+        .then(res=>{       
+          if(res.data.type ==="success"){
+            toast.success(res.data.message);
+            // <Route path="/home" component={Home} exact={true}/>  
+          } else{
+            toast.error(res.data.message);
+          }      
+          resetForm();
+          setSubmitting(false); 
+        })
+        .catch((error) => console.log(error))
         setSubmitting(false);
         resetForm();
       }, 500);
@@ -105,6 +127,8 @@ const Login = () => (
   </Formik>
 
   </div>
-);
+
+  </>
+}
 
 export default Login;

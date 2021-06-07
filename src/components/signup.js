@@ -1,10 +1,12 @@
 
 import React from "react";
-import axios from "axios";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { Link } from "react-router-dom";
-
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import {postSignupData} from '../helpers/controllers'
+toast.configure()
 const Signup = () => (
   <div className="login_form">
       <h1 className="mt-5">Sign Up form</h1>
@@ -15,14 +17,23 @@ const Signup = () => (
         let name = values.name
         let email = values.email
         let password = values.password
-        axios.post("https://myself-be-aware-b.herokuapp.com/api/signup",{name,email,password})
-        .then(function(response){
-          console.log(response)
+        const data ={name,email,password}
+
+        postSignupData(data) // here i got respose in promise
+        .then(res=>{           
+          if(res.data.type ==="success"){
+            toast.success("Request grant");
+            toast.success(res.data.message);
+          } else{
+            toast.error("Request Decline");
+            toast.error(res.data.message);
+          }      
+          resetForm();
+          setSubmitting(false); 
         })
-        .catch((error)=>console.log(error))
-        console.log("signup with", {name,email,password});
-        setSubmitting(false);
-        resetForm();
+        .catch((error) => console.log(error))
+            
+        
         // window.location.replace('/');
       }, 500);
     }}
@@ -55,6 +66,7 @@ const Signup = () => (
       } = props;
       return (
         <form onSubmit={handleSubmit}>
+          
         <label htmlFor="username">Username</label>
           <input
             name="name"
