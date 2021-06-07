@@ -1,7 +1,7 @@
 import axios from "./apiconnects";
 
 export const getData = ()=>{
-    return axios.get('/api/user-details').then((res)=>res);
+    return axios.get('api/user-details').then((res)=>res);
 }
 export const postSignupData = (data)=>{    
     // .catch((error)=>console.log(error))  
